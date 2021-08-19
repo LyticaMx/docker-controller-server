@@ -1,4 +1,5 @@
 [flake8]
 ignore = D400, D401
+exclude=**/migrations/**
 max-line-length = 88
 extend-ignore = E203
