@@ -50,6 +50,16 @@ class ServiceDefinition(models.Model):
         return self.name
 
 
+class CustomDateTimeField(models.DateTimeField):
+    """Modified datetime field to control auto_now programatically"""
+
+    def pre_save(self, model_instance, add):
+        """pre-save override to be awere of auto now behavour"""
+        if getattr(model_instance._meta, "not_update_version", False):
+            return models.Field.pre_save(self, model_instance, add)
+        return super().pre_save(model_instance, add)
+
+
 class Service(models.Model):
     """Represents a running container in a device"""
 
@@ -59,7 +69,7 @@ class Service(models.Model):
     status = models.CharField(max_length=10, blank=True, editable=False)
     active = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = CustomDateTimeField(auto_now=True)
 
     @property
     def config(self):

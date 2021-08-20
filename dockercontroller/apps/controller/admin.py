@@ -8,6 +8,7 @@ class ServiceInline(admin.TabularInline):
     """Stacked form for categories"""
 
     model = Service
+    readonly_fields = ("status", "version")
 
 
 class DeviceAdmin(admin.ModelAdmin):
